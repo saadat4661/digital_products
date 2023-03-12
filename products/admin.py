@@ -6,7 +6,7 @@ from .models import Product, Category, File
 
 class FileInlineAdmin(admin.StackedInline):
     model = File
-    fields = ['title', 'file', 'is_enable']
+    fields = ['id', 'title', 'file', 'file_type', 'is_enable']
     extra = 0
 
 

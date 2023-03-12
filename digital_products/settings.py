@@ -25,7 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products'
+
+    'rest_framework',
+
+    'products',
+    'users',
+    
 ]
 
 MIDDLEWARE = [
@@ -62,8 +67,12 @@ WSGI_APPLICATION = 'digital_products.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'digital_product',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD': '1234'
     }
 }
 
@@ -102,3 +111,6 @@ MEDIA_URL = '/media/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Authorization
+AUTH_USER_MODEL = 'users.User'
