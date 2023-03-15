@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from .serializers import ProductSerializer, CategorySerializer, FileSerializer
 from .models import Product, Category, File
@@ -10,8 +11,15 @@ from .models import Product, Category, File
 
 
 class ProductListView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
+
+        print('='*100)
+        print(request.user)
+        print(request.auth)
+        print('='*100)
+
         products = Product.objects.all()
         serializer = ProductSerializer(
             products, many=True, context={'request': request})
@@ -19,6 +27,7 @@ class ProductListView(APIView):
 
 
 class ProductDetailView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
         try:

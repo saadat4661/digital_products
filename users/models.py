@@ -10,10 +10,11 @@ from django.core.mail import send_mail
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, username, phone_number, email, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, username, phone_number, email, password, is_staff=False, is_superuser=False, **extra_fields):
         now = timezone.now()
         if not username:
             raise ValueError('The given username must be set.')
+
         email = self.normalize_email(email)
         user = self.model(phone_number=phone_number, username=username, email=email, is_staff=is_staff, is_active=True, is_superuser=is_superuser, date_joined=now, **extra_fields)
 
@@ -23,6 +24,7 @@ class UserManager(BaseUserManager):
         return user
     
     def create_user(self, username=None, phone_number=None, email=None, password=None, **extra_fields):
+
         if username is None:
             if email:
                 username=email.split('@',1)[0]
@@ -30,7 +32,8 @@ class UserManager(BaseUserManager):
                 username = random.choice('abcdefghijklmnopqrstuvwxyz')+str(phone_number)[-7:]
             while User.objects.filter(username=username).exists():
                 username += str(random.randint(10,99))
-        return self._create_user(self, username, phone_number, email, password, **extra_fields)
+
+        return self._create_user(username, phone_number, email, password, **extra_fields)
     
     def create_superuser(self, username, phone_number, email, password, **extra_fields):
         return self._create_user(username, phone_number, email, password, True, True, **extra_fields)
@@ -58,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                     'Unselect this instead of deleting accounts.')
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
     last_seen = models.DateTimeField(_('last seen date'), null=True)
-    
+
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
