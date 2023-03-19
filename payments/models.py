@@ -6,7 +6,7 @@ from utils.validators import validate_phone_number
 class Gateway(models.Model):
     title = models.CharField(_('title'), max_length=50)
     description = models.TextField(_('description'), blank=True)
-    avatar = models.ImageField(_('avatar'), blank=True, upload_to='geteways/')
+    avatar = models.ImageField(_('avatar'), blank=True, upload_to='gateways/')
     is_enable = models.BooleanField(_('is enable'), default=True)
     # credentials = models.TextField(_('credentials'), blank=True)
     created_time = models.DateTimeField(_('created time'), auto_now_add=True)
@@ -41,12 +41,12 @@ class Payment(models.Model):
     }
 
     user = models.ForeignKey('users.User',verbose_name=_('user'), related_name='%(class)s', on_delete=models.CASCADE)
-    pakage = models.ForeignKey('subscriptions.Package', verbose_name=_('package'), related_name= '%(class)s', on_delete=models.CASCADE)
-    geteway = models.ForeignKey(Gateway, verbose_name=_('geteway'), related_name= '%(class)s', on_delete=models.CASCADE)
+    package = models.ForeignKey('subscriptions.Package', verbose_name=_('package'), related_name= '%(class)s', on_delete=models.CASCADE)
+    gateway = models.ForeignKey(Gateway, verbose_name=_('geteway'), related_name= '%(class)s', on_delete=models.CASCADE)
     price = models.PositiveIntegerField(_('price'), default=0)
     status = models.PositiveSmallIntegerField(_('status'), choices=STATUS_CHOICES, default=STATUS_VOID, db_index=True)
     device_uuid = models.CharField(_('device uuid'), max_length=40, blank=True)
-    token = models.CharField()
+    token = models.CharField(max_length=50)
     phone_number = models.BigIntegerField(_('phone number'), validators=[validate_phone_number], db_index=True)
     consumed_code = models.PositiveIntegerField(_('consumed reference code'), null=True, db_index=True)
     created_time = models.DateTimeField(_('created time'), auto_now_add=True)

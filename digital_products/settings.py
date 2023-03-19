@@ -32,6 +32,8 @@ INSTALLED_APPS = [
 
     'products',
     'users',
+    'payments',
+    'subscriptions',
     
 ]
 
